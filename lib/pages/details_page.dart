@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import '/pages/home_page.dart';
 
 class ContactDetailsPage extends StatelessWidget {
-  final Map<String, dynamic> contact;
+//  final Map<String, dynamic> contact;
 
-  const ContactDetailsPage({super.key, required this.contact});
+  const ContactDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

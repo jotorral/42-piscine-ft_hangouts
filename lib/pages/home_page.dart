@@ -7,6 +7,8 @@ import 'package:path_provider/path_provider.dart';
 import '/utils/page_utils.dart';
 import '/utils/db_utils.dart';
 
+dynamic contact;
+
 class MyHomePage extends StatefulWidget {
   final String title;
 
@@ -130,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
             return ListView.builder(
               itemCount: contacts.length,
               itemBuilder: (context, index) {
-                final contact = contacts[index];
+                contact = contacts[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 8.0),
