@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import '/utils/page_utils.dart';
 import '/utils/db_utils.dart';
 
-dynamic contact;
+dynamic contact = {};  // Inicialización vacía de la variable global
 
 class MyHomePage extends StatefulWidget {
   final String title;
@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _navigateToContactDetails(BuildContext buildContext, Map<String, dynamic> contact){
+  void _navigateToContactDetails(BuildContext buildContext){
     final MyPageState? parentState = buildContext.findAncestorStateOfType<MyPageState>();
     if (parentState != null) {
       // Llamamos a la función 'cambiarPantalla' en MyPageState
@@ -137,7 +137,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 8.0),
                   child: GestureDetector(
-                    onTap: () => _navigateToContactDetails(context, contact),
+                    
+                    onTap: () {
+                      contact = contacts[index];
+                      _navigateToContactDetails(context);
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -147,6 +151,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Text(
+                                contact['id']?.toString() ?? 'Unknown',
+                                style: const TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.bold),
+                              ),
                               Text(
                                 contact['name'] ?? 'Unknown',
                                 style: const TextStyle(

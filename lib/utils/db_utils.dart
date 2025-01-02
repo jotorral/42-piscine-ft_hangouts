@@ -37,5 +37,5 @@ Future<int> insertItem(String name, String surename, int phone, String email,
 
 Future<List<Map<String, dynamic>>> fetchAllContacts() async {
   final db = await openDatabase('ft_hangouts.db');
-  return await db.query('items', columns: ['name', 'surename']);
+  return await db.query('items', columns: ['id', 'name', 'surename', 'phone', 'email', 'address']);
 }
