@@ -6,8 +6,8 @@ import 'package:path_provider/path_provider.dart';
 Future<Database> initializeDB() async {
   String path = await getDatabasesPath();
   debugPrint(path); // AQUI VISUALIZO LA RUTA POR DEFECTO DE LA BD
-  path =
-      '/storage/emulated/0/Download/'; // AQUÍ PISO LA RUTA DE LA BD POR DEFECTO Y LA PONGO EN LA CARPETA DOWNLOAD
+  // path =
+  //     '/storage/emulated/0/Download/'; // AQUÍ PISO LA RUTA DE LA BD POR DEFECTO Y LA PONGO EN LA CARPETA DOWNLOAD
   return openDatabase(
     join(path, 'ft_hangouts.db'),
     onCreate: (db, version) {
@@ -33,4 +33,9 @@ Future<int> insertItem(String name, String surename, int phone, String email,
     },
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
+}
+
+Future<List<Map<String, dynamic>>> fetchAllContacts() async {
+  final db = await openDatabase('ft_hangouts.db');
+  return await db.query('items', columns: ['name', 'surename']);
 }

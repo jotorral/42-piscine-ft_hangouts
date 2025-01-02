@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/pages/home_page.dart';
+import '/pages/details_page.dart';
 
 class MyPage extends StatefulWidget {
 	const MyPage({super.key});
@@ -8,17 +9,17 @@ class MyPage extends StatefulWidget {
 	MyPageState createState() => MyPageState();
 }
 
-
 class MyPageState extends State<MyPage> {
 	// Controlamos el estado con un índice para cambiar el contenido
 	int _currentIndex = 0;
+  
 
 	// Lista de pantallas que vamos a mostrar, basada en el índice
 	final List<Widget> _pantallas = [
-		const MyHomePage(title: 'Contacts list', cambiarPantalla: cambiarPantalla),      // Pantalla 0
-		const Login(),        // Pantalla 1
-		const ProfilePage(),  // Pantalla 2
-    	const CalendarPage(),    // Pantalla 3
+		const MyHomePage(title: 'Contacts list'),      // Pantalla 0
+		const ContactDetailsPage(),        // Pantalla 1
+		// const ProfilePage(),  // Pantalla 2
+    	// const CalendarPage(),    // Pantalla 3
 	];
 
 	// Función callback para cambiar el índice desde las pantallas hijas

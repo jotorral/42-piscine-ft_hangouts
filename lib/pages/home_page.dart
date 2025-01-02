@@ -1,31 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-
+import '/utils/page_utils.dart';
+import '/utils/db_utils.dart';
 
 class MyHomePage extends StatefulWidget {
-  
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
+
+  const MyHomePage({super.key, required this.title});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  late Future<List<Map<String, dynamic>>> _futureContacts;
+  Color _appBarColor = Colors.blue;
+
+  // void _changeAppBarColor() {
+  //   setState(() {
+  //     // Cambiar el color al azar o con un color fijo
+  //     _appBarColor = _appBarColor == Colors.blue ? Colors.green : Colors.blue;
+  //   });
+  // }
+
+  void _changeAppBarColor(Color color) {
+    setState(() {
+      _appBarColor = color;
+    });
+  }
+
+  void _navigateToContactDetails(BuildContext buildContext, Map<String, dynamic> contact){
+    final MyPageState? parentState = buildContext.findAncestorStateOfType<MyPageState>();
+    if (parentState != null) {
+      // Llamamos a la función 'cambiarPantalla' en MyPageState
+      parentState.cambiarPantalla(1);  // Cambiar a la pantalla 1
+    } else {
+      debugPrint('No se encontró el estado del padre');
+    }
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -36,6 +53,12 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _futureContacts = fetchAllContacts();
   }
 
   @override
@@ -51,44 +74,141 @@ class _MyHomePageState extends State<MyHomePage> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: _appBarColor,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.color_lens),
+              onPressed: () {
+                showMenu<Color>(
+                  context: context,
+                  position: const RelativeRect.fromLTRB(100, 50, 0, 0),
+                  items: [
+                    PopupMenuItem<Color>(
+                        value: Colors.blue, child: Container(padding: const EdgeInsets.all(8),color: Colors.blue, child: const Text('Blue', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))),
+                    PopupMenuItem<Color>(
+                        value: Colors.green, child: Container(padding: const EdgeInsets.all(8), color: Colors.green,child: const Text('Green', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))),
+                    PopupMenuItem<Color>(
+                        value: Colors.yellow, child: Container(padding: const EdgeInsets.all(8), color: Colors.yellow, child: const Text('Yellow', style: TextStyle(fontWeight: FontWeight.bold,)))),
+                    PopupMenuItem<Color>(
+                        value: Colors.red, child: Container(padding: const EdgeInsets.all(8), color: Colors.red, child: const Text('Red', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)))),
+                    PopupMenuItem<Color>(
+                        value: Colors.orange, child: Container(padding: const EdgeInsets.all(8), color: Colors.orange,child: const Text('Orange', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,)))),
+                    PopupMenuItem<Color>(
+                        value: Colors.purple,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          color: Colors.purple,
+                          child: const Text('Purple', style: TextStyle(
+                            color: Colors.white, // Color del texto
+                            fontWeight: FontWeight.bold, // Para resaltar el texto
+                          ),),
+                        ),),
+                  ],
+                  elevation: 8.0,
+                ).then((color) {
+                  if (color != null) {
+                    _changeAppBarColor(color);
+                  }
+                });
+              }),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: _futureContacts,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No contacts found'));
+          } else {
+            final contacts = snapshot.data!;
+            return ListView.builder(
+              itemCount: contacts.length,
+              itemBuilder: (context, index) {
+                final contact = contacts[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 8.0),
+                  child: GestureDetector(
+                    onTap: () => _navigateToContactDetails(context, contact),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Nombre y apellido
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                contact['name'] ?? 'Unknown',
+                                style: const TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.bold),
+                              ),
+                              const Text(
+                                ' ',
+                                style: TextStyle(
+                                    fontSize: 16.0, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                contact['surename'] ?? 'Unknown',
+                                style: const TextStyle(
+                                    fontSize: 16.0, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Botones
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    // Acción para editar el contacto
+                                    debugPrint('Edit contact: ${contact['id']}');
+                                  },
+                                  child: const Text('CALL',
+                                      style: TextStyle(
+                                          fontSize: 12.0, color: Colors.black))
+                                  // icon: const Icon(Icons.edit, color: Colors.blue),
+                                  ),
+                              const SizedBox(
+                                width: 3,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Acción para eliminar el contacto
+                                  debugPrint('Delete contact: ${contact['id']}');
+                                },
+                                child: const Text('MESSAGE',
+                                    style: TextStyle(
+                                        fontSize: 12.0, color: Colors.black)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: () {
+          (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
+        },
+        tooltip: 'Go to Login Page',
+        child: const Icon(Icons.login),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

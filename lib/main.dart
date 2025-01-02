@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'pages/home_page.dart';
 import 'utils/db_utils.dart';
 import 'utils/language_utils.dart';
+import 'utils/page_utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'ft_hangouts'),
+      home: const MyPage(),
     );
   }
 }
