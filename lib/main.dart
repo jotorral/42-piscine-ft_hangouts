@@ -18,7 +18,7 @@ void main() async {
   LanguageManager.instance.setLanguage(deviceLocale.languageCode);
   debugPrint(LanguageManager.instance.translate('hello'));
   await initializeDB(); // INICIALIZA LA BD Y SI NO ESTÁ CREADA, LA CREA
-  await insertItem('Pepe', 'Gomez', 787868768, 'kjhjk@kjhkjh.com', 'Calle Mayor 15'); // AÑADE UN REGISTRO A LA BD
+//  await insertItem('Pepe', 'Gomez', 787868768, 'kjhjk@kjhkjh.com', 'Calle Mayor 15'); // AÑADE UN REGISTRO A LA BD
   LanguageManager.instance.setLanguage('es');
   debugPrint(LanguageManager.instance.translate('hello'));
   runApp(const MyApp());

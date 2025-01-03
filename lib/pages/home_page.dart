@@ -8,6 +8,7 @@ import '/utils/page_utils.dart';
 import '/utils/db_utils.dart';
 
 dynamic contact = {};  // Inicialización vacía de la variable global
+Color appBarColor = Colors.blue;
 
 class MyHomePage extends StatefulWidget {
   final String title;
@@ -21,7 +22,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   late Future<List<Map<String, dynamic>>> _futureContacts;
-  Color _appBarColor = Colors.blue;
 
   // void _changeAppBarColor() {
   //   setState(() {
@@ -32,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _changeAppBarColor(Color color) {
     setState(() {
-      _appBarColor = color;
+      appBarColor = color;
     });
   }
 
@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor: _appBarColor,
+        backgroundColor: appBarColor,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: GestureDetector(
                     
                     onTap: () {
-                      contact = contacts[index];
+                      contact = Map<String, dynamic>.from(contacts[index]);
                       _navigateToContactDetails(context);
                     },
                     child: Row(
@@ -151,11 +151,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                contact['id']?.toString() ?? 'Unknown',
-                                style: const TextStyle(
-                                    fontSize: 16.0, fontWeight: FontWeight.bold),
-                              ),
+                              // Text(
+                              //   contact['id']?.toString() ?? 'Unknown',
+                              //   style: const TextStyle(
+                              //       fontSize: 16.0, fontWeight: FontWeight.bold),
+                              // ),
                               Text(
                                 contact['name'] ?? 'Unknown',
                                 style: const TextStyle(
@@ -216,10 +216,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
+          (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(2);
         },
         tooltip: 'Go to Login Page',
-        child: const Icon(Icons.login),
+        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

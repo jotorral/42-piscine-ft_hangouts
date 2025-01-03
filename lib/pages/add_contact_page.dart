@@ -3,15 +3,15 @@ import '/pages/home_page.dart';
 import '/utils/page_utils.dart';
 import '/utils/db_utils.dart';
 
-class ContactDetailsPage extends StatefulWidget{
-  const ContactDetailsPage({super.key});
+class AddContactPage extends StatefulWidget{
+  const AddContactPage({super.key});
 
   @override
-  ContactDetailsPageState createState() => ContactDetailsPageState();
+  AddContactPageState createState() => AddContactPageState();
 }
 
 
-class ContactDetailsPageState extends State<ContactDetailsPage> {
+class AddContactPageState extends State<AddContactPage> {
   late TextEditingController nameController;
   late TextEditingController surenameController;
   late TextEditingController phoneController;
@@ -21,11 +21,11 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
   @override
   void initState(){
     super.initState();
-    nameController = TextEditingController(text: contact['name']);
-    surenameController = TextEditingController(text: contact['surename']);
-    phoneController = TextEditingController(text: contact['phone'].toString());
-    emailController = TextEditingController(text: contact['email']);
-    addressController = TextEditingController(text: contact['address']);
+    nameController = TextEditingController();
+    surenameController = TextEditingController();
+    phoneController = TextEditingController();
+    emailController = TextEditingController();
+    addressController = TextEditingController();
   }
 
   @override
@@ -40,20 +40,33 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
 
   Future<void> saveContact() async {
     // Actualiza los valores de la variable global contact
-    contact['name'] = nameController.text;
-    contact['surename'] = surenameController.text;
-    contact['phone'] = phoneController.text;
-    contact['email'] = emailController.text;
-    contact['address'] = addressController.text;
+    final name = nameController.text;
+    final surename = surenameController.text;
+    final phoneText = phoneController.text;
+    final email = emailController.text;
+    final address = addressController.text;
 
+    final phone = int.tryParse(phoneText);
 
-    await updateContact(contact);
+    if (name.isEmpty || surename.isEmpty || phone == null || email.isEmpty || address.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill out all fields')),
+      );
+      return;
+    }
+
+    final id = await insertItem(name, surename, phone, email, address);
 
     if (mounted){
+    if (id >0){
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Contact ${contact['name']} updated'))
+        SnackBar(content: Text('Contact $name added succesfully'),)
       );
- 
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to add contact'))
+      );
+    }
       // Regresa a la pantalla principal
       (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
     }
@@ -74,7 +87,7 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
               }
             ),
 
-            const Text('ft_hangouts'),
+            const Text('Add new contact'),
             
             Expanded(child: Container()),
             
@@ -87,28 +100,8 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
                 onPressed: (){
                 // Acción para guardar
                   saveContact();
-                  debugPrint ('SAVE: ${contact['name']}');
+                  debugPrint ('CONTACT SAVED');
                 }),
-
-
-              IconButton(icon: const Icon(Icons.delete),
-              tooltip: 'DELETE',
-              onPressed: () async {
-                //acción para eliminar contacto
-                final contactId = contact['id'];
-                if (contactId != null){
-                  await deleteContact(contactId);
-                  debugPrint('Deleted contact: $contactId');
-                  if (context.mounted){
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Contact ${contact['name']} deleted')));
-                    (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
-                  }
-                } else{
-                debugPrint ('Contact ID is null');
-                }
-              }),
-
-
             ],)
           ],
         ),
@@ -139,14 +132,6 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
               controller: addressController,
               decoration: const InputDecoration(labelText: 'Adress'),
             ),
-
-            Text('${contact['id']}', style: const TextStyle(fontSize: 18)),
-            Text('${contact['name']}', style: const TextStyle(fontSize: 18)),
-            Text('${contact['surename']}', style: const TextStyle(fontSize: 18)),
-            Text('${contact['phone']}', style: const TextStyle(fontSize: 18)),
-            Text('${contact['email']}', style: const TextStyle(fontSize: 18)),
-            Text('${contact['address']}', style: const TextStyle(fontSize: 18)),
-            // Puedes agregar más campos de tu base de datos aquí si es necesario
           ],
         ),
       ),

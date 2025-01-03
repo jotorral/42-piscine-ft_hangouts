@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '/pages/home_page.dart';
 import '/pages/details_page.dart';
+import '/pages/add_contact_page.dart';
 
 class MyPage extends StatefulWidget {
 	const MyPage({super.key});
@@ -18,7 +19,7 @@ class MyPageState extends State<MyPage> {
 	final List<Widget> _pantallas = [
 		const MyHomePage(title: 'Contacts list'),      // Pantalla 0
 		const ContactDetailsPage(),        // Pantalla 1
-		// const ProfilePage(),  // Pantalla 2
+		const AddContactPage(),  // Pantalla 2
     	// const CalendarPage(),    // Pantalla 3
 	];
 

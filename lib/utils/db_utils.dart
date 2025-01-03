@@ -39,3 +39,32 @@ Future<List<Map<String, dynamic>>> fetchAllContacts() async {
   final db = await openDatabase('ft_hangouts.db');
   return await db.query('items', columns: ['id', 'name', 'surename', 'phone', 'email', 'address']);
 }
+
+Future<void> deleteContact(int id) async {
+  final db = await initializeDB();
+  await db.delete(
+    'items',
+    where: 'id = ?', // Condición para identificar el registro a eliminar
+    whereArgs: [id], // Argumentos para la condición
+  );
+  debugPrint('Contact with ID $id deleted');
+}
+
+Future<void> updateContact(contact) async {
+  final db = await initializeDB();
+
+  await db.update(
+    'items', // Nombre de la tabla
+    {
+      'name': contact['name'],
+      'surename': contact['surename'],
+      'phone': contact['phone'],
+      'email': contact['email'],
+      'address': contact['address'],
+    }, // Los datos que queremos actualizar
+    where: 'id = ?', // Condición para identificar el registro a actualizar
+    whereArgs: [contact['id']], // Argumentos para la condición (en este caso el ID del contacto)
+  );
+
+  debugPrint('Updated contact with ID ${contact['id']}');
+}
