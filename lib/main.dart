@@ -8,18 +8,22 @@ import 'pages/home_page.dart';
 import 'utils/db_utils.dart';
 import 'utils/language_utils.dart';
 import 'utils/page_utils.dart';
+import 'utils/color_utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Locale deviceLocale = PlatformDispatcher.instance.locale;
+  await LanguageManager.instance.initializeLanguage();
+    // Inicializa el color guardado
+  await ColorManager.instance.initializeColor();
+  // Locale deviceLocale = PlatformDispatcher.instance.locale;
 
-  debugPrint('Idioma del dispositivo: ${deviceLocale.languageCode}');
-  debugPrint('País del dispositivo: ${deviceLocale.countryCode}');
-  LanguageManager.instance.setLanguage(deviceLocale.languageCode);
-  debugPrint(LanguageManager.instance.translate('hello'));
+  // debugPrint('Idioma del dispositivo: ${deviceLocale.languageCode}');
+  // debugPrint('País del dispositivo: ${deviceLocale.countryCode}');
+  // LanguageManager.instance.setLanguage(deviceLocale.languageCode);
+  // debugPrint(LanguageManager.instance.translate('hello'));
   await initializeDB(); // INICIALIZA LA BD Y SI NO ESTÁ CREADA, LA CREA
 //  await insertItem('Pepe', 'Gomez', 787868768, 'kjhjk@kjhkjh.com', 'Calle Mayor 15'); // AÑADE UN REGISTRO A LA BD
-  LanguageManager.instance.setLanguage('es');
+  // LanguageManager.instance.setLanguage('es');
   debugPrint(LanguageManager.instance.translate('hello'));
   runApp(const MyApp());
 }

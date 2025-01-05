@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '/pages/home_page.dart';
 import '/utils/page_utils.dart';
 import '/utils/db_utils.dart';
+import '/utils/language_utils.dart';
+import '/utils/color_utils.dart';
 
 class AddContactPage extends StatefulWidget{
   const AddContactPage({super.key});
@@ -39,7 +41,7 @@ class AddContactPageState extends State<AddContactPage> {
   }
 
   Future<void> saveContact() async {
-    // Actualiza los valores de la variable global contact
+  
     final name = nameController.text;
     final surename = surenameController.text;
     final phoneText = phoneController.text;
@@ -50,7 +52,7 @@ class AddContactPageState extends State<AddContactPage> {
 
     if (name.isEmpty || surename.isEmpty || phone == null || email.isEmpty || address.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill out all fields')),
+        SnackBar(content: Text(LanguageManager.instance.translate('Please fill out all fields properly')), backgroundColor: Colors.red,),
       );
       return;
     }
@@ -60,11 +62,11 @@ class AddContactPageState extends State<AddContactPage> {
     if (mounted){
     if (id >0){
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Contact $name added succesfully'),)
+        SnackBar(content: Text('${LanguageManager.instance.translate('Contact')} $name ${LanguageManager.instance.translate('added succesfully')}'), backgroundColor: Colors.green)
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to add contact'))
+        SnackBar(content: Text(LanguageManager.instance.translate('Failed to add contact')), backgroundColor: Colors.red,)
       );
     }
       // Regresa a la pantalla principal
@@ -76,18 +78,18 @@ class AddContactPageState extends State<AddContactPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: appBarColor,
+        backgroundColor: ColorManager.instance.currentColor,
         title: Row(
           children: [
             IconButton(
               icon: const Icon(Icons.arrow_back),
-              tooltip: 'BACK',
+              tooltip: LanguageManager.instance.translate('BACK'),
               onPressed: (){
                 (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
               }
             ),
 
-            const Text('Add new contact'),
+            Text(LanguageManager.instance.translate('BACK')),
             
             Expanded(child: Container()),
             
@@ -96,7 +98,7 @@ class AddContactPageState extends State<AddContactPage> {
 
               IconButton(
                 icon: const Icon(Icons.save),
-                tooltip: 'SAVE',
+                tooltip: LanguageManager.instance.translate('SAVE'),
                 onPressed: (){
                 // Acción para guardar
                   saveContact();
@@ -114,23 +116,23 @@ class AddContactPageState extends State<AddContactPage> {
 
             TextFormField(
               controller: nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(labelText: LanguageManager.instance.translate('Name')),
             ),
             TextFormField(
               controller: surenameController,
-              decoration: const InputDecoration(labelText: 'Surename'),
+              decoration: InputDecoration(labelText: LanguageManager.instance.translate('Surename')),
             ),
             TextFormField(
               controller: phoneController,
-              decoration: const InputDecoration(labelText: 'Phone'),
+              decoration: InputDecoration(labelText: LanguageManager.instance.translate('Phone')),
             ),
             TextFormField(
               controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(labelText: LanguageManager.instance.translate('Email')),
             ),
             TextFormField(
               controller: addressController,
-              decoration: const InputDecoration(labelText: 'Adress'),
+              decoration: InputDecoration(labelText: LanguageManager.instance.translate('Address')),
             ),
           ],
         ),

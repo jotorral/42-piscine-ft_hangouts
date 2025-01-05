@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '/pages/home_page.dart';
 import '/pages/details_page.dart';
 import '/pages/add_contact_page.dart';
+import '/utils/language_utils.dart';
 
 class MyPage extends StatefulWidget {
 	const MyPage({super.key});
@@ -14,10 +15,9 @@ class MyPageState extends State<MyPage> {
 	// Controlamos el estado con un índice para cambiar el contenido
 	int _currentIndex = 0;
   
-
 	// Lista de pantallas que vamos a mostrar, basada en el índice
 	final List<Widget> _pantallas = [
-		const MyHomePage(title: 'Contacts list'),      // Pantalla 0
+		const MyHomePage(),      // Pantalla 0
 		const ContactDetailsPage(),        // Pantalla 1
 		const AddContactPage(),  // Pantalla 2
     	// const CalendarPage(),    // Pantalla 3
@@ -33,7 +33,6 @@ class MyPageState extends State<MyPage> {
 
 	@override
 	Widget build(BuildContext context) {
-
 
 		return Scaffold(
 			body: _pantallas[_currentIndex],  // Muestra la pantalla correspondiente

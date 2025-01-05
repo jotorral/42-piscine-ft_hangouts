@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '/pages/home_page.dart';
 import '/utils/page_utils.dart';
 import '/utils/db_utils.dart';
+import '/utils/language_utils.dart';
+import '/utils/color_utils.dart';
 
 class ContactDetailsPage extends StatefulWidget{
   const ContactDetailsPage({super.key});
@@ -51,7 +53,7 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
 
     if (mounted){
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Contact ${contact['name']} updated'))
+        SnackBar(content: Text('${LanguageManager.instance.translate('Contact')} ${contact['name']} ${LanguageManager.instance.translate('updated')}'), backgroundColor: Colors.green,)
       );
  
       // Regresa a la pantalla principal
@@ -63,12 +65,12 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: appBarColor,
+        backgroundColor: ColorManager.instance.currentColor,
         title: Row(
           children: [
             IconButton(
               icon: const Icon(Icons.arrow_back),
-              tooltip: 'BACK',
+              tooltip: LanguageManager.instance.translate('BACK'),
               onPressed: (){
                 (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
               }
@@ -83,7 +85,7 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
 
               IconButton(
                 icon: const Icon(Icons.save),
-                tooltip: 'SAVE',
+                tooltip: LanguageManager.instance.translate('SAVE'),
                 onPressed: (){
                 // Acción para guardar
                   saveContact();
@@ -92,7 +94,7 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
 
 
               IconButton(icon: const Icon(Icons.delete),
-              tooltip: 'DELETE',
+              tooltip: LanguageManager.instance.translate('DELETE'),
               onPressed: () async {
                 //acción para eliminar contacto
                 final contactId = contact['id'];
@@ -100,7 +102,7 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
                   await deleteContact(contactId);
                   debugPrint('Deleted contact: $contactId');
                   if (context.mounted){
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Contact ${contact['name']} deleted')));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${LanguageManager.instance.translate('Contact')} ${contact['name']} ${LanguageManager.instance.translate('deleted succesfully')}'), backgroundColor: Colors.green,));
                     (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
                   }
                 } else{
@@ -121,31 +123,31 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
 
             TextFormField(
               controller: nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(labelText: LanguageManager.instance.translate('Name')),
             ),
             TextFormField(
               controller: surenameController,
-              decoration: const InputDecoration(labelText: 'Surename'),
+              decoration: InputDecoration(labelText: LanguageManager.instance.translate('Surename')),
             ),
             TextFormField(
               controller: phoneController,
-              decoration: const InputDecoration(labelText: 'Phone'),
+              decoration: InputDecoration(labelText: LanguageManager.instance.translate('Phone')),
             ),
             TextFormField(
               controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(labelText: LanguageManager.instance.translate('Email')),
             ),
             TextFormField(
               controller: addressController,
-              decoration: const InputDecoration(labelText: 'Adress'),
+              decoration: InputDecoration(labelText: LanguageManager.instance.translate('Address')),
             ),
 
-            Text('${contact['id']}', style: const TextStyle(fontSize: 18)),
-            Text('${contact['name']}', style: const TextStyle(fontSize: 18)),
-            Text('${contact['surename']}', style: const TextStyle(fontSize: 18)),
-            Text('${contact['phone']}', style: const TextStyle(fontSize: 18)),
-            Text('${contact['email']}', style: const TextStyle(fontSize: 18)),
-            Text('${contact['address']}', style: const TextStyle(fontSize: 18)),
+            // Text('${contact['id']}', style: const TextStyle(fontSize: 18)),
+            // Text('${contact['name']}', style: const TextStyle(fontSize: 18)),
+            // Text('${contact['surename']}', style: const TextStyle(fontSize: 18)),
+            // Text('${contact['phone']}', style: const TextStyle(fontSize: 18)),
+            // Text('${contact['email']}', style: const TextStyle(fontSize: 18)),
+            // Text('${contact['address']}', style: const TextStyle(fontSize: 18)),
             // Puedes agregar más campos de tu base de datos aquí si es necesario
           ],
         ),
