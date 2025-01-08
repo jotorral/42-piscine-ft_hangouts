@@ -40,6 +40,9 @@ dependencies:
   path_provider: ^2.1.5
   flutter_colorpicker: ^1.1.0
   shared_preferences: ^2.3.5
+  fluttertoast: ^8.2.10
+  intl: ^0.20.1
+  # flutter_launcher_icons: ^0.14.2
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +54,23 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.2
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/icon/42_Logo.svg.png"  # Ruta al icono de tu app
+  adaptive_icon_background: "lib/assets/icon/background.png"  # Fondo del icono (opcional)
+  adaptive_icon_foreground: "lib/assets/icon/foreground.png"  # Primer plano del icono (opcional)
+  web:
+    generate: true
+    image_path: "lib/assets/icon/42_Logo.svg.png"  # Ruta al icono de tu web
+  windows:
+    generate: true
+    image_path: "lib/assets/icon/42_Logo.svg.png"  # Ruta al icono de Windows
+  macos:
+    generate: true
+    image_path: "lib/assets/icon/42_Logo.svg.png"  # Ruta al icono de Mac
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

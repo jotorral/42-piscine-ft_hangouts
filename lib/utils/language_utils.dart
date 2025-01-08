@@ -64,6 +64,11 @@ class Translations {
       'updated': 'updated',
       'DELETE': 'DELETE',
       'deleted succesfully': 'deleted succesfully',
+      'Time in background: ': 'Time in background: ',
+      ' minutes and ': ' minutes and ',
+      ' seconds.': ' seconds.',
+      ' during ': ' during ',
+      'In background since: ': 'In background since: ',
     },
     'es': {
       'hello': 'Hola',
@@ -95,6 +100,11 @@ class Translations {
       'updated': 'actualizado',
       'DELETE': 'ELIMINAR',
       'deleted succesfully': 'eliminado correctamente',
+      'Time in background: ': 'Tiempo en segundo plano: ',
+      ' minutes and ': ' minutos y ',
+      ' seconds.': ' segundos.',
+      ' during ': ' durante ',
+      'In background since: ': 'En segundo plano desde: ',
     },
     'fr': {
       'hello': 'Bonjour',
@@ -127,7 +137,11 @@ class Translations {
       'updated': 'mis à jour',
       'DELETE':'ÉLIMINER',
       'deleted succesfully': 'a été supprimé avec succès',
+      'Time in background: ': 'Temps en arrière-plan : ',
+      ' minutes and ': ' minutes et ',
+      ' seconds.': ' secondes.',
+      ' during ': ' pendant ',
+      'In background since: ': 'En arrière-plan depuis: ',
     },
   };
 }
-
