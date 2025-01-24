@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import '/utils/page_utils.dart';
 import '/utils/db_utils.dart';
 import '/utils/language_utils.dart';
 import '/utils/color_utils.dart';
 
+
 dynamic contact = {}; // Inicialización vacía de la variable global
 Color appBarColor = Colors.blue;
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -33,7 +30,29 @@ class _MyHomePageState extends State<MyHomePage> {
         buildContext.findAncestorStateOfType<MyPageState>();
     if (parentState != null) {
       // Llamamos a la función 'cambiarPantalla' en MyPageState
-      parentState.cambiarPantalla(1); // Cambiar a la pantalla 1
+      parentState.cambiarPantalla(2); // Cambiar a la pantalla 2
+    } else {
+      debugPrint('No se encontró el estado del padre');
+    }
+  }
+
+    void _navigateToSmsPage(BuildContext buildContext) {
+    final MyPageState? parentState =
+        buildContext.findAncestorStateOfType<MyPageState>();
+    if (parentState != null) {
+      // Llamamos a la función 'cambiarPantalla' en MyPageState
+      parentState.cambiarPantalla(5); // Cambiar a la pantalla 4
+    } else {
+      debugPrint('No se encontró el estado del padre');
+    }
+  }
+
+    void _navigateToSendSmsPage(BuildContext buildContext) {
+    final MyPageState? parentState =
+        buildContext.findAncestorStateOfType<MyPageState>();
+    if (parentState != null) {
+      // Llamamos a la función 'cambiarPantalla' en MyPageState
+      parentState.cambiarPantalla(4); // Cambiar a la pantalla 4
     } else {
       debugPrint('No se encontró el estado del padre');
     }
@@ -109,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         // Nombre y apellido
                         Expanded(
-                          flex: 2,
+                          flex: 4,
                           child: Wrap(
                             spacing: 4.0,
                             children: [
@@ -137,31 +156,34 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              ElevatedButton(
-                                  onPressed: () {
-                                    // Acción para realizar una llamada
-                                    debugPrint(
-                                        'Edit contact: ${contact['id']}');
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(0, 0),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0, horizontal: 8.0),
-                                  ),
-                                  child: Text(
-                                      LanguageManager.instance
-                                          .translate('CALL'),
-                                      style: const TextStyle(
-                                          fontSize: 10.0,
-                                          color: Colors.black))),
+                              // ElevatedButton(
+                              //     onPressed: () {
+                              //       actualContactPhoneNumber = contacts[index]['phone'];
+                              //       // Acción para realizar una llamada
+                              //       debugPrint(
+                              //           'Call contact: ${contacts[index]['phone']}');
+                              //     },
+                              //     style: ElevatedButton.styleFrom(
+                              //       minimumSize: const Size(0, 0),
+                              //       padding: const EdgeInsets.symmetric(
+                              //           vertical: 8.0, horizontal: 8.0),
+                              //     ),
+                              //     child: Text(
+                              //         LanguageManager.instance
+                              //             .translate('CALL'),
+                              //         style: const TextStyle(
+                              //             fontSize: 10.0,
+                              //             color: Colors.black))),
                               const SizedBox(
                                 width: 3,
                               ),
                               ElevatedButton(
                                 onPressed: () {
                                   // Acción para enviar un mensaje
+                                  actualContactPhoneNumber = contacts[index]['phone'].toString();
+                                  if (mounted) _navigateToSendSmsPage(context);
                                   debugPrint(
-                                      'Delete contact: ${contact['id']}');
+                                      'Send SMS to contact: ${contacts[index]['phone']}');
                                 },
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
@@ -186,12 +208,27 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(2);
-        },
-        tooltip: LanguageManager.instance.translate('Go to Login Page'),
-        child: const Icon(Icons.add),
+      
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+
+          FloatingActionButton(
+            onPressed: () {
+              if (mounted) _navigateToSmsPage(context);
+            },
+            tooltip: LanguageManager.instance.translate('Go to Messages Page'),
+            child: const Icon(Icons.message_outlined),
+          ),
+
+          FloatingActionButton(
+            onPressed: () {
+              (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(3);
+            },
+            tooltip: LanguageManager.instance.translate('Go to Login Page'),
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }

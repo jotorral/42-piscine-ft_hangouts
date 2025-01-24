@@ -6,7 +6,7 @@ import '/utils/language_utils.dart';
 import '/utils/color_utils.dart';
 
 class ContactDetailsPage extends StatefulWidget{
-  const ContactDetailsPage({super.key});
+  const ContactDetailsPage({Key? key}) : super(key: key);
 
   @override
   ContactDetailsPageState createState() => ContactDetailsPageState();
@@ -57,7 +57,7 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
       );
  
       // Regresa a la pantalla principal
-      (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
+      (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(1);
     }
   }
 
@@ -72,7 +72,7 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
               icon: const Icon(Icons.arrow_back),
               tooltip: LanguageManager.instance.translate('BACK'),
               onPressed: (){
-                (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
+                (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(1);
               }
             ),
 
@@ -103,7 +103,7 @@ class ContactDetailsPageState extends State<ContactDetailsPage> {
                   debugPrint('Deleted contact: $contactId');
                   if (context.mounted){
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${LanguageManager.instance.translate('Contact')} ${contact['name']} ${LanguageManager.instance.translate('deleted succesfully')}'), backgroundColor: Colors.green,));
-                    (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
+                    (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(1);
                   }
                 } else{
                 debugPrint ('Contact ID is null');

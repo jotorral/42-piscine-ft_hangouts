@@ -1,3 +1,14 @@
+buildscript {
+    ext.kotlin_version = '1.9.24'  // La versión de Kotlin que está en uso
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.6.0'
+    }
+}
+
 allprojects {
     repositories {
         google()

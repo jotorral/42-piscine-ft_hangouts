@@ -1,5 +1,5 @@
-package com.example.piscine_mobile_hangouts
+package net.torralba.sms_advanced
 
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity: FlutterActivity()
+class MainActivity: FlutterFragmentActivity()

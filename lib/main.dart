@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
-import 'pages/home_page.dart';
 import 'utils/db_utils.dart';
 import 'utils/language_utils.dart';
 import 'utils/page_utils.dart';
 import 'utils/color_utils.dart';
 
+import 'pages/advanced_sms_page.dart';
+
 void main() async {
+    FlutterError.onError = (FlutterErrorDetails details) {
+    // Imprime los detalles del error en la consola
+    FlutterError.dumpErrorToConsole(details);
+
+    // Si necesitas manejarlo de manera personalizada:
+    debugPrint('FlutterError: ${details.exceptionAsString()}');
+    if (details.stack != null) {
+      debugPrint('StackTrace: ${details.stack}');
+    }
+  };
   WidgetsFlutterBinding.ensureInitialized();
   await LanguageManager.instance.initializeLanguage();
-    // Inicializa el color guardado
   await ColorManager.instance.initializeColor();
-  // Locale deviceLocale = PlatformDispatcher.instance.locale;
 
-  // debugPrint('Idioma del dispositivo: ${deviceLocale.languageCode}');
-  // debugPrint('País del dispositivo: ${deviceLocale.countryCode}');
-  // LanguageManager.instance.setLanguage(deviceLocale.languageCode);
-  // debugPrint(LanguageManager.instance.translate('hello'));
   await initializeDB(); // INICIALIZA LA BD Y SI NO ESTÁ CREADA, LA CREA
-//  await insertItem('Pepe', 'Gomez', 787868768, 'kjhjk@kjhkjh.com', 'Calle Mayor 15'); // AÑADE UN REGISTRO A LA BD
-  // LanguageManager.instance.setLanguage('es');
+
   debugPrint(LanguageManager.instance.translate('hello'));
   runApp(const MyApp());
+  //runApp(const AdvancedApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -38,21 +39,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '42 Mobile ft_hangouts',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),

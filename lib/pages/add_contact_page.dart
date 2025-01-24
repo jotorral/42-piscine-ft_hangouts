@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '/pages/home_page.dart';
+
 import '/utils/page_utils.dart';
 import '/utils/db_utils.dart';
 import '/utils/language_utils.dart';
 import '/utils/color_utils.dart';
 
 class AddContactPage extends StatefulWidget{
-  const AddContactPage({super.key});
+  const AddContactPage({Key? key}) : super(key: key);
 
   @override
   AddContactPageState createState() => AddContactPageState();
@@ -70,7 +70,7 @@ class AddContactPageState extends State<AddContactPage> {
       );
     }
       // Regresa a la pantalla principal
-      (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
+      (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(1);
     }
   }
 
@@ -85,7 +85,7 @@ class AddContactPageState extends State<AddContactPage> {
               icon: const Icon(Icons.arrow_back),
               tooltip: LanguageManager.instance.translate('BACK'),
               onPressed: (){
-                (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(0);
+                (context.findAncestorStateOfType<MyPageState>()!).cambiarPantalla(1);
               }
             ),
 

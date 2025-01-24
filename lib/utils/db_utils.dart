@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
+
+String actualContactPhoneNumber = '';
 
 Future<Database> initializeDB() async {
   String path = await getDatabasesPath();
@@ -12,7 +14,7 @@ Future<Database> initializeDB() async {
     join(path, 'ft_hangouts.db'),
     onCreate: (db, version) {
       return db.execute(
-        'CREATE TABLE items(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, surename TEXT, phone INTEGER, email TEXT, address TEXT)',
+        'CREATE TABLE items(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, surename TEXT, phone TEXT, email TEXT, address TEXT)',
       );
     },
     version: 1,

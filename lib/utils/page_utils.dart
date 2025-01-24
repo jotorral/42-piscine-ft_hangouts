@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart'; // Necesario para WidgetsBindingObserver
+// import 'package:flutter/widgets.dart'; // Necesario para WidgetsBindingObserver
 import 'package:fluttertoast/fluttertoast.dart'; // Necesario para mostrar el Toast con el tiempo tras estar en segundo plano
 import 'package:intl/intl.dart'; // Necesario para formatear la fecha quitándole la hora
+
+import '/pages/permission_page.dart';
 import '/pages/home_page.dart';
 import '/pages/details_page.dart';
 import '/pages/add_contact_page.dart';
+import '/pages/sms_page.dart';
+import '/pages/advanced_sms_page.dart'; // *************** PRUEBA ***************
+
 import '/utils/language_utils.dart';
 
 class MyPage extends StatefulWidget {
@@ -24,10 +29,12 @@ class MyPageState extends State<MyPage> with WidgetsBindingObserver {
 
   // Lista de pantallas que vamos a mostrar, basada en el índice
   final List<Widget> _pantallas = [
-    const MyHomePage(), // Pantalla 0
-    const ContactDetailsPage(), // Pantalla 1
-    const AddContactPage(), // Pantalla 2
-    // const CalendarPage(),    // Pantalla 3
+    const PermissionPage(), // Pantalla 0
+    const MyHomePage(), // Pantalla 1
+    const ContactDetailsPage(), // Pantalla 2
+    const AddContactPage(), // Pantalla 3
+    const SmsPage(),    // Pantalla 4
+    const AdvancedApp(), // Pantalla 5
   ];
 
   // Función callback para cambiar el índice desde las pantallas hijas
