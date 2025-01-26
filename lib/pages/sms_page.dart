@@ -115,7 +115,8 @@ class SmsPageState extends State<SmsPage> {
                   // await Future.delayed(const Duration(seconds: 1));
 
                   setState(() {
-                    messages = List.from(messages)..add(newMessage);
+                    // messages = List.from(messages)..add(newMessage);
+                    messages = List.from(messages)..insert(0, newMessage);
                     isLoading = false;
                   });
                   debugPrint('Mensaje añadido a la lista. Total mensajes: ${messages.length}');
@@ -135,7 +136,7 @@ class SmsPageState extends State<SmsPage> {
   @override
   Widget build(BuildContext context) {
     // Filter messages where Id matches the actualContactId
-    final filteredMessages = messages
+    dynamic filteredMessages = messages
         .where((msg) => msg.address == actualContactPhoneNumber)
         .toList();
     debugPrint('actualContactPhoneNumber: $actualContactPhoneNumber');
@@ -168,15 +169,18 @@ class SmsPageState extends State<SmsPage> {
             child: ElevatedButton(
               onPressed: () {
                 // SmsSender sender = SmsSender();
-                String address = filteredMessages.isNotEmpty
-                    ? filteredMessages[0].address ?? '0'
-                    : '0'; // Reemplaza con el número deseado
-                if (address != '0') {
+                // String address = filteredMessages.isNotEmpty
+                //     ? filteredMessages[0].address ?? '0'
+                //     : '0'; // Reemplaza con el número deseado
+                if (actualContactPhoneNumber != '0') {
                   // sender.sendSms(SmsMessage(address, 'Hello flutter world!'));
-                  _showSmsDialog(context, address);
+                  _showSmsDialog(context, actualContactPhoneNumber);
                 }
-                debugPrint('SMS enviado a $address');
+                debugPrint('SMS enviado a $actualContactPhoneNumber');
                 // requestPermissions2();
+                setState(() {filteredMessages = messages
+        .where((msg) => msg.address == actualContactPhoneNumber)
+        .toList();});
               },
               child: const Text('Send SMS'),
             ),
